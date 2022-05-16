@@ -1,0 +1,151 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.logolog{
+  width:60%;
+  margin-left: 21%;
+
+}
+
+h1 {
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  margin-top: 5%;
+  margin-bottom: 2%;
+}
+
+.select{
+  background-color: #000;
+  margin-bottom: 30px;
+  margin-left: 30px;
+  font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+option {
+  border-radius: 15px;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+
+.center {
+  position: relative;
+  background: #fff;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.inputbox {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.center .inputbox {
+  position: relative;
+  width: 300px;
+  height: 50px;
+  margin-bottom: 50px;
+}
+.center .inputbox input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  border: 2px solid #000;
+  outline: none;
+  background: none;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 1.2em;
+}
+.center .inputbox:last-child {
+  margin-bottom: 0;
+}
+
+
+.center .inputbox [type="submit"] {
+  margin-left: 30%;
+  width: 50%;
+  background: black;
+  color: #fff;
+  border: #fff;
+}
+.champs{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.select {
+  color: #fff;
+  border: #fff;
+  margin-bottom: 100px;
+
+}
+
+label {
+  margin-right: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/*-------------------Button----------------*/
+
+.buttonlog {
+  background-color: #222;
+  border-radius: 4px;
+  border-style: none;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Farfetch Basis","Helvetica Neue",Arial,sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.5;
+  max-width: none;
+  min-height: 44px;
+  min-width: 10px;
+  outline: none;
+  overflow: hidden;
+  padding: 9px 20px 8px;
+  position: relative;
+  text-align: center;
+  text-transform: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: 100%;
+}
+
+.buttonlog:hover,
+.buttonlog:focus {
+  opacity: 0.75;
+    
+}
+
+table, th, td {
+  border: 1px solid black;
+  text-align: center;
+}
+
+.liste {
+  margin: 100px;
+}
+
+.title{
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  margin-top: 20px;
+}
+
+.error{
+  color: #D8000C;
+  margin: 10px 0px;
+  padding: 15px 10px 15px 50px;
+  text-align: center;
+  font-weight: bold;
+}
