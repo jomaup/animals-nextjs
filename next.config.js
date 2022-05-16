@@ -4,8 +4,8 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: "/api/:path*",
-        destination: "https://api.example.com/:path*",
+        source: "/:path*",
+        destination: "https://https://animals-nest-js.herokuapp.com/:path",
       },
     ];
   },
