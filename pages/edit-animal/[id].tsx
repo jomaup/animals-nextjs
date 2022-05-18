@@ -13,10 +13,6 @@ const EditAnimal = () => {
     type: string;
   }
 
-  type ParamTypes = {
-    id: string;
-  };
-
   const dispatch = useDispatch();
 
   const animals = useSelector<AppState, AnimalsState>(
