@@ -12,7 +12,7 @@ export const deleteAnimal =
     dispatch({ type: DELETE_ANIMAL_REQUEST });
     try {
       await axios.delete(
-        `https://https://animals-nest-js.herokuapp.com/animals/${deletedId}`
+        `https://animals-nest-js.herokuapp.com/animals/${deletedId}`
       );
       dispatch({
         type: DELETE_ANIMAL_SUCCESS,

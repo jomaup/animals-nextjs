@@ -31,7 +31,7 @@ export const fetchAnimals: any =
         animals: [],
       });
       const res: AxiosResponse<Animal[]> = await axios.get(
-        "https://https://animals-nest-js.herokuapp.com/animals",
+        "https://animals-nest-js.herokuapp.com/animals",
         {
           headers: {
             authorization: `Bearer ${

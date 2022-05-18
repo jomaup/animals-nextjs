@@ -21,7 +21,7 @@ export const editAnimal =
     dispatch({ type: UPDATE_ANIMAL_REQUEST });
     try {
       const res: AxiosResponse<Animal> = await axios.put(
-        `https://https://animals-nest-js.herokuapp.com/${editedAnimal.id}`,
+        `https://animals-nest-js.herokuapp.com/${editedAnimal.id}`,
         editedAnimal
       );
       handleEditAnimalSuccess(dispatch, res.data);
