@@ -1,10 +1,17 @@
-import { FetchAnimalsSuccess, FETCH_ANIMAL_REQUEST, FETCH_ANIMAL_SUCCESS, FETCH_ANIMAL_FAILURE } from "../models/actions";
+import {
+  FetchAnimalsSuccess,
+  FETCH_ANIMAL_REQUEST,
+  FETCH_ANIMAL_SUCCESS,
+  FETCH_ANIMAL_FAILURE,
+} from "../models/actions";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { Animal } from "../models/animal";
 import { Dispatch } from "redux";
 
-
-export const handleFetchAnimalsSuccess = (dispatch: Dispatch<FetchAnimalsSuccess>, res: Animal[]) => {
+export const handleFetchAnimalsSuccess = (
+  dispatch: Dispatch<FetchAnimalsSuccess>,
+  res: Animal[]
+) => {
   dispatch({
     type: FETCH_ANIMAL_SUCCESS,
     animals: res,
@@ -23,12 +30,17 @@ export const fetchAnimals: any =
         error: "",
         animals: [],
       });
-      const res: AxiosResponse<Animal[]> = await axios.get("http://localhost:5000/animals", {
-        headers: {
-          authorization: `Bearer ${JSON.parse(localStorage.getItem("token") || "").accessToken}`,
-        },
-      });
-      
+      const res: AxiosResponse<Animal[]> = await axios.get(
+        "https://https://animals-nest-js.herokuapp.com/animals",
+        {
+          headers: {
+            authorization: `Bearer ${
+              JSON.parse(localStorage.getItem("token") || "").accessToken
+            }`,
+          },
+        }
+      );
+
       handleFetchAnimalsSuccess(dispatch, res.data);
     } catch (e) {
       dispatch({

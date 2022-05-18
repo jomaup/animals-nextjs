@@ -10,76 +10,79 @@ import { Animal } from "../../store/animals/models/animal";
 import { deleteAnimal } from "../../store/animals/use-cases/delete-animal.use-case";
 import { fetchAnimals } from "../../store/animals/use-cases/get-animals.use-case";
 import { AppState } from "../../store/rootStore";
-import jwt_decode from "jwt-decode"
+import jwt_decode from "jwt-decode";
 
-const axiosInstance = axios.create()
+const axiosInstance = axios.create();
 
 const Index = () => {
   const dispatch = useDispatch();
 
   type Token = {
-    accessToken: string,
-    refreshToken: string,
-    userId: string
-  }
-    
+    accessToken: string;
+    refreshToken: string;
+    userId: string;
+  };
+
   axiosInstance.interceptors.request.use(
     async (config: AxiosRequestConfig<String>) => {
-      const token = JSON.parse(localStorage.getItem("token") || "{}")
+      const token = JSON.parse(localStorage.getItem("token") || "{}");
       config.headers!["authorization"] = token?.accessToken
         ? `Bearer ${token.accessToken}`
-        : ""
+        : "";
 
-      const currentDate = new Date()
+      const currentDate = new Date();
       if (token) {
-        const decodedToken: any = jwt_decode(token?.accessToken || "")
+        const decodedToken: any = jwt_decode(token?.accessToken || "");
 
         if (decodedToken.exp! * 1000 < currentDate.getTime()) {
-          const data = await getRefreshToken()
-          config.headers!["authorization"] = "Bearer " + data.accessToken
+          const data = await getRefreshToken();
+          config.headers!["authorization"] = "Bearer " + data.accessToken;
           localStorage.setItem(
             "token",
             JSON.stringify({
               refreshToken: token?.refreshToken || null,
               accessToken: data.accessToken,
             })
-          )
+          );
         }
       }
 
-      return config
+      return config;
     }
-  )
-      
+  );
+
   const getRefreshToken = async () => {
-      const token = JSON.parse(localStorage.getItem("token") || "{}")
-        try {
-          const res = await axios.post("http://localhost:5000/auth/refresh", {
-            token: token?.refreshToken || null,
-          })
-          return res.data
-        } catch (err) {
-          return "false"
-        }  
-  }
+    const token = JSON.parse(localStorage.getItem("token") || "{}");
+    try {
+      const res = await axios.post(
+        "https://https://animals-nest-js.herokuapp.com/auth/refresh",
+        {
+          token: token?.refreshToken || null,
+        }
+      );
+      return res.data;
+    } catch (err) {
+      return "false";
+    }
+  };
 
   useEffect(() => {
-    
-    dispatch(fetchAnimals()); 
-    
+    dispatch(fetchAnimals());
   }, []);
 
-  const animals = useSelector<AppState, AnimalsState>((state) => state.animalsReducer);
+  const animals = useSelector<AppState, AnimalsState>(
+    (state) => state.animalsReducer
+  );
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    Router.push("/add-animal")
-  }
+    event.preventDefault();
+    Router.push("/add-animal");
+  };
 
   const onDelete = async (id: string) => {
-    dispatch(deleteAnimal(id) as any)
-    dispatch(fetchAnimals())
-  }
+    dispatch(deleteAnimal(id) as any);
+    dispatch(fetchAnimals());
+  };
 
   return (
     <>
@@ -103,21 +106,29 @@ const Index = () => {
                 <td>{animal.age}</td>
                 <td>{animal.type}</td>
                 <td className="spaceBetween">
-                <button >
-              
-                </button>
-                <div className="flex">
-                  <button onClick={() => onDelete(animal.id)}>
-                    <Image src="/images/delete.png" alt="image login" width={32} height={32}  />
-                  </button>
-                  <Link href={'/edit-animal/' + animal.id} key={animal.id}>
-                    <a>
-                      <Image src="/images/edit.png" alt="image login" width={32} height={32}  />
-                    </a>
-                  </Link>
-                </div>
-              </td>
-          </tr>
+                  <button></button>
+                  <div className="flex">
+                    <button onClick={() => onDelete(animal.id)}>
+                      <Image
+                        src="/images/delete.png"
+                        alt="image login"
+                        width={32}
+                        height={32}
+                      />
+                    </button>
+                    <Link href={"/edit-animal/" + animal.id} key={animal.id}>
+                      <a>
+                        <Image
+                          src="/images/edit.png"
+                          alt="image login"
+                          width={32}
+                          height={32}
+                        />
+                      </a>
+                    </Link>
+                  </div>
+                </td>
+              </tr>
             ))}
           </tbody>
         </table>
