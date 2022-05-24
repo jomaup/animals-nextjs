@@ -55,7 +55,7 @@ const Index = () => {
     const token = JSON.parse(localStorage.getItem("token") || "{}");
     try {
       const res = await axios.post(
-        "https://https://animals-nest-js.herokuapp.com/auth/refresh",
+        "https://animals-nest-js.herokuapp.com/auth/refresh",
         {
           token: token?.refreshToken || null,
         }
