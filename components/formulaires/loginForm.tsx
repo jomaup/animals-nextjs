@@ -24,8 +24,11 @@ export const LoginForm = () => {
 
     try {
       const response = await axios.post(
-        "https://animals-nest-js.herokuapp.com/auth/local/signin",
-        { username: form.username, password: form.password }
+        "http://localhost:5000/auth/local/signin",
+        {
+          username: form.username,
+          password: form.password,
+        }
       );
       localStorage.setItem(
         "token",

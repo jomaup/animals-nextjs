@@ -1,6 +1,5 @@
 export type ChatEntity = {
-  id: string;
+  id: number;
   username: string;
   text: string;
-  createdAt: Date;
 };

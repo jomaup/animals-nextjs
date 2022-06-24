@@ -1,19 +1,16 @@
-import { BrowserRouter as Router } from "react-router-dom";
-import { NextPage } from "next/types";
-import { AddAnimalForm } from "../../components/AddAnimal";
 import dynamic from "next/dynamic";
+import { NextPage } from "next/types";
 
 const Home: NextPage = () => {
-  const AddAnimal = dynamic<{}>(
-    () => {
-      return import("../../components/AddAnimal").then(
-        (mod) => mod.AddAnimalForm
-      );
+  const isBrowser = typeof window !== "undefined";
+
+  const AddAnimal = dynamic(
+    async () => {
+      const m = await import("../../components/AddAnimal");
+      return m.AddAnimalForm;
     },
     { ssr: false }
   );
-
-  const isBrowser = typeof window !== "undefined";
 
   return isBrowser ? <AddAnimal /> : null;
 };
