@@ -35,7 +35,7 @@ export const fetchAnimals: any =
         {
           headers: {
             authorization: `Bearer ${
-              JSON.parse(localStorage.getItem("token") || "").accessToken
+              JSON.parse(localStorage.getItem("user") || "").accessToken
             }`,
           },
         }

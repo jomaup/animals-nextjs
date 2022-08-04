@@ -31,7 +31,7 @@ export const addAnimal =
     });
     try {
       const res: AxiosResponse<Animal> = await axios.post(
-        "https://animals-nest-js.herokuapp.com/animals",
+        "http://localhost:5000/animals",
         animal
       );
       handleAddAnimalSuccess(dispatch, res.data);

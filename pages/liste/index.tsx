@@ -11,21 +11,17 @@ import { deleteAnimal } from "../../store/animals/use-cases/delete-animal.use-ca
 import { fetchAnimals } from "../../store/animals/use-cases/get-animals.use-case";
 import { AppState } from "../../store/rootStore";
 import jwt_decode from "jwt-decode";
+import { UserDTO } from "../../dto/user.dto";
+import { IonButton, IonDatetime } from "@ionic/react";
 
 const axiosInstance = axios.create();
 
-const Index = () => {
+const Index = (user: UserDTO) => {
   const dispatch = useDispatch();
-
-  type Token = {
-    accessToken: string;
-    refreshToken: string;
-    userId: string;
-  };
 
   axiosInstance.interceptors.request.use(
     async (config: AxiosRequestConfig<String>) => {
-      const token = JSON.parse(localStorage.getItem("token") || "{}");
+      const token = JSON.parse(localStorage.getItem("user") || "{}");
       config.headers!["authorization"] = token?.accessToken
         ? `Bearer ${token.accessToken}`
         : "";
@@ -38,7 +34,7 @@ const Index = () => {
           const data = await getRefreshToken();
           config.headers!["authorization"] = "Bearer " + data.accessToken;
           localStorage.setItem(
-            "token",
+            "user",
             JSON.stringify({
               refreshToken: token?.refreshToken || null,
               accessToken: data.accessToken,
@@ -52,7 +48,7 @@ const Index = () => {
   );
 
   const getRefreshToken = async () => {
-    const token = JSON.parse(localStorage.getItem("token") || "{}");
+    const token = JSON.parse(localStorage.getItem("user") || "{}");
     try {
       const res = await axios.post(
         "https://animals-nest-js.herokuapp.com/auth/refresh",
@@ -138,6 +134,9 @@ const Index = () => {
           Ajouter son animal !
         </button>
       </form>
+      <div>
+        <Link href={"/chat"}>yes</Link>
+      </div>
     </>
   );
 };

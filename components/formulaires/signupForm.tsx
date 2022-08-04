@@ -15,7 +15,7 @@ export const SignupForm = () => {
 
   const formSubmitHandler: SubmitHandler<userSignup> = (data: userSignup) => {
     try {
-      axios.post("https://animals-nest-js.herokuapp.com/user/signup", {
+      axios.post("http://localhost:5000/users/signup", {
         username: data.username,
         password: data.password,
       });

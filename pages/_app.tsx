@@ -3,6 +3,9 @@ import React from "react";
 import { createWrapper } from "next-redux-wrapper";
 import { initStore } from "../store/rootStore";
 import App from "next/app";
+import "@ionic/react/css/core.css";
+import { IonApp, IonRouterOutlet } from "@ionic/react";
+import { IonReactRouter } from "@ionic/react-router";
 
 const wrapper = createWrapper(initStore);
 

@@ -30,15 +30,14 @@ export const LoginForm = () => {
           password: form.password,
         }
       );
-      localStorage.setItem(
-        "token",
-        JSON.stringify({
-          accessToken: response.data.accessToken,
-          refreshToken: response.data.refreshToken,
-          userId: response.data.userId,
-        })
-      );
-      Router.push("/liste");
+
+      const User = JSON.stringify({
+        username: response.data.username,
+        accessToken: response.data.accessToken,
+        refreshToken: response.data.refreshToken,
+      });
+      localStorage.setItem("user", User);
+      Router.push(`/liste`);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         throw error;
