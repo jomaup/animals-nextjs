@@ -37,7 +37,7 @@ export const LoginForm = () => {
         refreshToken: response.data.refreshToken,
       });
       localStorage.setItem("user", User);
-      Router.push(`/liste`);
+      Router.push({pathname:`/liste`, query: { username: form.username}}, "/liste");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         throw error;

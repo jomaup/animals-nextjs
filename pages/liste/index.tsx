@@ -1,8 +1,8 @@
-import axios, { AxiosRequestConfig } from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import Image from "next/image";
 import Link from "next/link";
-import Router from "next/router";
-import React from "react";
+import Router, { useRouter } from "next/router";
+import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AnimalsState } from "../../store/animals/animalReducer";
@@ -16,7 +16,9 @@ import { IonButton, IonDatetime } from "@ionic/react";
 
 const axiosInstance = axios.create();
 
-const Index = (user: UserDTO) => {
+const Index = () => {
+
+  const router = useRouter()
   const dispatch = useDispatch();
 
   axiosInstance.interceptors.request.use(
@@ -46,6 +48,7 @@ const Index = (user: UserDTO) => {
       return config;
     }
   );
+  
 
   const getRefreshToken = async () => {
     const token = JSON.parse(localStorage.getItem("user") || "{}");
@@ -61,6 +64,10 @@ const Index = (user: UserDTO) => {
       return "false";
     }
   };
+
+  const chatLink = () => {
+    Router.push({ pathname: "/chat", query: { username: router.query.username }})
+  }
 
   useEffect(() => {
     dispatch(fetchAnimals());
@@ -134,8 +141,8 @@ const Index = (user: UserDTO) => {
           Ajouter son animal !
         </button>
       </form>
-      <div>
-        <Link href={"/chat"}>yes</Link>
+      <div onClick={chatLink}>
+        <div>{router.query.username}</div>
       </div>
     </>
   );

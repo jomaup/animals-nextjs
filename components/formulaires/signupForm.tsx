@@ -19,7 +19,7 @@ export const SignupForm = () => {
         username: data.username,
         password: data.password,
       });
-      Router.push("/liste");
+      Router.push("/");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         throw error;
