@@ -14,6 +14,7 @@ const ChatComponent = (props: Props) => {
   const [selectedUser, setSelectedUser] = useState<UserDTO>()
   const [users, setUsers] = useState<UserDTO[]>([])
   const [localUser, setLocalUser] = useState<UserDTO>()
+  const [messages, setMessages] = useState<Message[]>();
 
   const getLocalUserInformations = async (username: string | string[] | undefined) => {
     const res: AxiosResponse<UserDTO> = await axios.post(
@@ -22,6 +23,12 @@ const ChatComponent = (props: Props) => {
     );
     setLocalUser(res.data)
     console.log(res.data)
+  }
+
+  const getUsers = async () => {
+    const res = await axios.get("http://localhost:5000/users")
+
+    setUsers(res.data)
   }
   
 
@@ -36,24 +43,23 @@ const ChatComponent = (props: Props) => {
 //     }   
 //   }
 
-  const onMessage = (contenu: string) => {
+  const onMessage  = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if(selectedUser) {
-      socket.emit("private message", {
-        contenu,
-        to: selectedUser.id
-      })
-      selectedUser.messages.push({
-        content: contenu, fromSelf: true,
-        from: selectedUser
+      socket.emit("private message",{ 
+        form,
+        selectedUser
       })
     }
   }
 
   const selectUser = (user: UserDTO) => {
     setSelectedUser(user)
+    console.log(user)
   }
 
   useEffect(() => {
+    getUsers();
     getLocalUserInformations(props.username);
 
     socket.on("connect", () => {
@@ -66,20 +72,22 @@ const ChatComponent = (props: Props) => {
     socket.on("users", (users: UserDTO[]) => {
       console.log(users)
       users.forEach((user: UserDTO) => {
-        user.messages.forEach((message) => {
-          message.fromSelf = message.from.id === socket.userId;
-        });
-        for (let i = 0; i < users.length; i++) {
-          const existingUser = users[i];
-          if (existingUser.id === user.id) {
-            existingUser.connected = user.connected;
-            existingUser.messages = user.messages;
-            return;
+        if(user.messages) {
+          user.messages.forEach((message) => {
+            message.fromSelf = message.from.id === socket.userId;
+          });
+          for (let i = 0; i < users.length; i++) {
+            const existingUser = users[i];
+            if (existingUser.id === user.id) {
+              existingUser.connected = user.connected;
+              existingUser.messages = user.messages;
+              return;
+            }
           }
+          user.self = user.id === socket.userId;
+      
+          setUsers([...users, user])  
         }
-        user.self = user.id === socket.userId;
-    
-        setUsers([...users, user])
       });
       
       users.sort((a: UserDTO, b: UserDTO) => {
@@ -114,33 +122,37 @@ const ChatComponent = (props: Props) => {
 
     socket.on("private message", ({ content, from, to }) => {
       for (let i = 0; i < users.length; i++) {
+        console.log(users);
         const user = users[i];
         const fromSelf = socket.id === from;
         if (user.id === (fromSelf ? to : from)) {
-          user.messages.push({
-            content,
-            fromSelf,
-            from: from
-          });
+          if(user.messages){
+            user.messages.push({
+              content,
+              fromSelf,
+              from: from
+            });
+            console.log(users)
+          }
           break;
         }
       }
     });
 
+    console.log(users)
+
   }, [])
 
     return (
       <>
-    
         <div className="flex justify-center w-full">
-          <div>{localUser?.username}</div>
-          <div>
-            {users.map((user: UserDTO) => (
-              <div key={user.id} onClick={() => selectUser}>{user.username}</div>
-            ))}
-          </div>
             <div>
-              {typeof selectedUser == "object" && 
+              {users.filter((user) => user.username !== props.username).map((user: UserDTO) => (
+                <div key={user.id} onClick={() => selectUser(user)}>{user.username}</div>
+              ))}
+            </div>
+            <div>
+              {typeof selectedUser !== "undefined" && 
                   <div>
                     {selectedUser.messages?.map((message: Message, index: number) => (
                       <div key={index}>{message.content}</div>
@@ -148,12 +160,12 @@ const ChatComponent = (props: Props) => {
                   </div>
               }
             </div>
-            <form onSubmit={() => onMessage}>
+            <form onSubmit={onMessage}>
                 <input onChange={(e) =>
                   setForm(e.target.value)
                 }></input>
                 <button>Envoyer</button>
-            </form> 
+            </form>
         </div>
       </>
     );

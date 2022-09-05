@@ -4,7 +4,7 @@ export type UserDTO = {
   id: string;
   username: string;
   password: string;
-  messages: Message[];
+  messages?: Message[];
   self: boolean;
   connected: boolean;
 };
